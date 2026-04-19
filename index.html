@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, height=720">
+<title>2026 Annual Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;font-family:Arial,sans-serif;width:1280px;height:720px;overflow:hidden;display:flex;flex-direction:column;}
+.slide{display:none;flex-direction:column;flex:1;}
+.slide.active{display:flex;}
+
+/* ===== 第1页：表格（大幅横向收紧） ===== */
+.tw{padding:18px 90px;display:flex;align-items:center;flex:1;overflow:hidden;}
+/* 表格整体收紧：max-width从1100降到960 */
+table{border-collapse:collapse;table-layout:fixed;width:100%;max-width:960px;margin:0 auto;}
+/* 列宽重新收紧分配 */
+colgroup col:nth-child(1){width:11%}
+colgroup col:nth-child(2){width:23%}
+colgroup col:nth-child(3){width:15%}
+colgroup col:nth-child(4){width:27%}
+colgroup col:nth-child(5){width:8%}
+td{padding:5px 7px;vertical-align:middle;font-size:12px;line-height:1.35;word-break:break-word;border:1px solid #333;}
+td.chdr{background:#111;color:#E0B150;font-weight:700;font-size:12px;text-align:center;}
+td.csys{background:#0d0d00;color:#E0B150;font-weight:700;font-size:11px;}
+td.ctopic{background:#0d0d0d;color:#fff;font-size:11px;}
+td.cbef{background:#111;color:#fff;font-size:11px;}
+td.caft{background:#001208;color:#6DD4A8;font-weight:700;font-size:11px;}
+td.cteam{background:#0d0d0d;color:#fff;font-size:10px;text-align:center;}
+
+/* ===== Grid Dashboard ===== */
+/* 关键修复：加上 grid-template-rows:1fr 1fr 让两行等高！ */
+.grid{flex:1;display:grid;grid-template-columns:42% 58%;grid-template-rows:1fr 1fr;position:relative;}
+.grid::before{content:'';position:absolute;top:50%;left:36px;right:36px;height:1px;background:rgba(255,255,255,0.30);z-index:10;pointer-events:none;}
+
+/* 左列：圆环图 — 统一class */
+.cd{padding:6px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+/* 右列 */
+.cb{padding:6px 24px 6px 16px;display:flex;flex-direction:column;justify-content:center;}
+.cka{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:6px 24px;}
+
+/* 标题 — 居中于圆环正上方 */
+.slbl{font-size:12px;font-weight:700;color:#fff;letter-spacing:0.5px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;text-align:center;box-sizing:border-box;padding:0 10px;}
+.slbl .dot{width:5px;height:5px;border-radius:50%;background:#ffa500;flex-shrink:0;}
+
+/* KPI卡片 */
+.kcard{background:#141414;border-radius:8px;padding:10px 10px;border:1px solid #222;display:flex;flex-direction:column;gap:3px;width:60%;}
+.klabel{font-size:11px;font-weight:600;color:#ccc;}
+.kval{font-size:28px;font-weight:800;line-height:1;}
+.kblue{color:#448aff;}.kgreen{color:#28c964;}
+.korange{color:#ffa500;}.kred{color:#ff6b6b;}
+
+/* 圆环容器 — 无额外margin，flex自动居中 */
+.svg-wrap{display:flex;flex-direction:column;align-items:center;}
+
+/* 条形图 — 修复：去掉space-between，用固定gap */
+.br{display:flex;align-items:center;gap:7px;height:20px;}
+.blbl{font-size:12px;color:#fff;width:96px;text-align:right;flex-shrink:0;}
+.btrk{flex:1;height:13px;background:#000000;border-radius:3px;overflow:hidden;}
+.bfil{height:100%;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;}
+/* 数字：浅灰白、不加粗 */
+.bnum{font-size:10px;color:#d0d0d0;font-weight:normal;}
+
+/* 导航栏 */
+.nav{position:fixed;bottom:0;left:0;right:0;height:1px;background:transparent;z-index:9999;pointer-events:none;}
+.nav.on{pointer-events:all;height:auto;background:#000;border-top:1px solid #111;padding:8px;display:flex;align-items:center;justify-content:center;gap:14px;cursor:pointer;}
+.nbtn{width:36px;height:36px;border-radius:50%;border:1px solid #333;background:#111;color:#888;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;pointer-events:all;}
+.ndot{width:8px;height:8px;border-radius:50%;background:#333;cursor:pointer;pointer-events:all;}
+.ndot.active{background:#E0B150;}
+.pgnum{font-size:10px;color:#444;}
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1 ==================== -->
+<div class="slide active" id="slide1">
+  <div class="tw">
+    <table>
+      <colgroup><col><col><col><col><col></colgroup>
+      <tr><td class="chdr">System</td><td class="chdr">Topic</td><td class="chdr">Before</td><td class="chdr">After (Benefit)</td><td class="chdr">Team</td></tr>
+      <tr><td class="csys" rowspan="3">SAP Shanghai Warehouse Integration Project</td><td class="ctopic">Receiving or dispatch in the warehouse</td><td class="cbef">At least a 1–2-day</td><td class="caft">Within 10 seconds</td><td class="cteam" rowspan="3">Operation Team</td></tr>
+      <tr><td class="ctopic">Reduce workload and improve accuracy</td><td class="cbef">Need 8 hours per month</td><td class="caft">Reduce 8 hours workload per month</td></tr>
+      <tr><td class="ctopic">Inventory Accuracy</td><td class="cbef">/</td><td class="caft">Provide real-time and accurate inventory and more reliable data for planning and sales.</td></tr>
+      <tr><td class="csys" rowspan="2">Centric</td><td class="ctopic">Split dimenstion data from supplier quote</td><td class="cbef">Need 2 work days</td><td class="caft">10 min</td><td class="cteam">Quality Team</td></tr>
+      <tr><td class="ctopic">Supplier quote related improvement</td><td class="cbef"></td><td class="caft"></td><td class="cteam">Project Sourcing Team</td></tr>
+      <tr><td class="csys">Precisely Automation</td><td class="ctopic">Using this tool to update PO price</td><td class="cbef">If manually update in SAP, need average 60 min one time</td><td class="caft">10 min</td><td class="cteam">Finance Team</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 2 ==================== -->
+<div class="slide" id="slide2">
+  <div class="grid">
+
+    <!-- 左上：进度环 — 改为280×230与下方一致，圆心cx/cy保持115 -->
+    <div class="cd">
+      <div class="svg-wrap">
+        <!-- 统一280×230画布，圆心在(115,125)，圆r=78 -->
+        <svg width="280" height="230" viewBox="0 0 280 230">
+          <circle cx="115" cy="115" r="78" fill="none" stroke="#1a1a1a" stroke-width="20"/>
+          <circle cx="115" cy="115" r="78" fill="none" stroke="#ffa500" stroke-width="20"
+            stroke-dasharray="490.09" stroke-dashoffset="44.11"
+            transform="rotate(-90 115 115)" stroke-linecap="round"/>
+          <text x="115" y="123" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">91%</text>
+          <text x="115" y="141" text-anchor="middle" font-size="12" font-weight="600" fill="#888">277 / 306</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 右上：KPI -->
+    <div class="cka">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="kcard"><div class="klabel kblue">Total Task / Requirement</div><div class="kval kblue">306</div></div>
+        <div class="kcard"><div class="klabel kgreen">Complete</div><div class="kval kgreen">277</div></div>
+        <div class="kcard"><div class="klabel korange">In Progress</div><div class="kval korange">16</div></div>
+        <div class="kcard"><div class="klabel kred">To Do</div><div class="kval kred">13</div></div>
+      </div>
+    </div>
+
+    <!-- 左下：App圆环 — 同样280×230，同样圆心(115,115) -->
+    <div class="cd">
+      <div class="svg-wrap">
+        <svg width="280" height="230" viewBox="0 0 280 230">
+          <path d="M115.00 35.00 A80 80 0 0 1 183.45 156.41" fill="none" stroke="#ffa500" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M183.45 156.41 A80 80 0 0 1 74.29 183.87" fill="none" stroke="#e040fb" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M74.29 183.87 A80 80 0 0 1 44.13 77.88" fill="none" stroke="#4fc3f7" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M44.13 77.88 A80 80 0 0 1 63.58 53.72" fill="none" stroke="#ffd740" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M63.58 53.72 A80 80 0 0 1 80.08 43.02" fill="none" stroke="#aeea00" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M80.08 43.02 A80 80 0 0 1 92.32 38.28" fill="none" stroke="#00c853" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M92.32 38.28 A80 80 0 0 1 105.17 35.61" fill="none" stroke="#00bcd4" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M105.17 35.61 A80 80 0 0 1 111.72 35.07" fill="none" stroke="#448aff" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M111.72 35.07 A80 80 0 0 1 115.00 35.00" fill="none" stroke="#304ffe" stroke-width="20" stroke-linejoin="round"/>
+          <text x="115" y="110" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">306</text>
+          <text x="115" y="129" text-anchor="middle" font-size="11" fill="#888">TOTAL</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 右下：App条形图 — 修复：去掉space-between/flex:1，用固定gap:2px -->
+    <div class="cb">
+      <div style="display:flex;flex-direction:column;gap:5.5px;padding:2px 0;">
+        <div class="br"><div class="blbl">Data Governance</div><div class="btrk"><div class="bfil" style="width:67.4%;background:#ffa500"></div></div></div>
+        <div class="br"><div class="blbl">SAP</div><div class="btrk"><div class="bfil" style="width:49.7%;background:#e040fb"></div></div></div>
+        <div class="br"><div class="blbl">Centric</div><div class="btrk"><div class="bfil" style="width:48.4%;background:#4fc3f7"></div></div></div>
+        <div class="br"><div class="blbl">Ithos</div><div class="btrk"><div class="bfil" style="width:12.4%;background:#ffd740"></div></div></div>
+        <div class="br"><div class="blbl">BambooHR</div><div class="btrk"><div class="bfil" style="width:7.8%;background:#aeea00"></div></div></div>
+        <div class="br"><div class="blbl">ServiceNow</div><div class="btrk"><div class="bfil" style="width:5.2%;background:#00bcd4"></div></div></div>
+        <div class="br"><div class="blbl">Coupa</div><div class="btrk"><div class="bfil" style="width:5.2%;background:#00c853"></div></div></div>
+        <div class="br"><div class="blbl">Precisely</div><div class="btrk"><div class="bfil" style="width:2.6%;background:#448aff"></div></div></div>
+        <div class="br"><div class="blbl">Lever</div><div class="btrk"><div class="bfil" style="width:1.4%;background:#304ffe"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SLIDE 3 ==================== -->
+<div class="slide" id="slide3">
+  <div class="grid">
+
+    <!-- 左上：Dept圆环 — .cd统一类 -->
+    <div class="cd">
+      <div class="svg-wrap">
+        <svg width="280" height="230" viewBox="0 0 280 230">
+          <path d="M115.00 35.00 A80 80 0 0 1 149.92 186.98" fill="none" stroke="#ffa500" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M149.92 186.98 A80 80 0 0 1 44.91 153.57" fill="none" stroke="#e040fb" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M44.91 153.57 A80 80 0 0 1 35.11 119.10" fill="none" stroke="#4fc3f7" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M35.11 119.10 A80 80 0 0 1 40.11 86.87" fill="none" stroke="#a5d6a7" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M40.11 86.87 A80 80 0 0 1 56.44 60.50" fill="none" stroke="#fff176" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M56.44 60.50 A80 80 0 0 1 74.29 46.13" fill="none" stroke="#f48fb1" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M74.29 46.13 A80 80 0 0 1 95.49 37.42" fill="none" stroke="#80cbc4" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M95.49 37.42 A80 80 0 0 1 115.00 35.00" fill="none" stroke="#9e9e9e" stroke-width="20" stroke-linejoin="round"/>
+          <text x="115" y="110" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">306</text>
+          <text x="115" y="129" text-anchor="middle" font-size="11" fill="#888">TOTAL</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 右上：Dept条形图 — 同样去掉space-between，gap:2px -->
+    <div class="cb">
+      <div style="display:flex;flex-direction:column;gap:5.5px;padding:2px 0;">
+        <div class="br"><div class="blbl">PPD</div><div class="btrk"><div class="bfil" style="width:85.6%;background:#ffa500"></div></div></div>
+        <div class="br"><div class="blbl">Op&amp;Planning</div><div class="btrk"><div class="bfil" style="width:48.4%;background:#e040fb"></div></div></div>
+        <div class="br"><div class="blbl">Global Team</div><div class="btrk"><div class="bfil" style="width:14.4%;background:#4fc3f7"></div></div></div>
+        <div class="br"><div class="blbl">R&amp;D</div><div class="btrk"><div class="bfil" style="width:13.0%;background:#a5d6a7"></div></div></div>
+        <div class="br"><div class="blbl">Finance</div><div class="btrk"><div class="bfil" style="width:12.4%;background:#fff176"></div></div></div>
+        <div class="br"><div class="blbl">Quality</div><div class="btrk"><div class="bfil" style="width:9.2%;background:#f48fb1"></div></div></div>
+        <div class="br"><div class="blbl">HR&amp;Admin</div><div class="btrk"><div class="bfil" style="width:9.2%;background:#80cbc4"></div></div></div>
+        <div class="br"><div class="blbl">Op Excellence</div><div class="btrk"><div class="bfil" style="width:7.8%;background:#9e9e9e"></div></div></div>
+      </div>
+    </div>
+
+    <!-- 左下：Type圆环 — .cd统一类 -->
+    <div class="cd">
+      <div class="svg-wrap">
+        <svg width="280" height="230" viewBox="0 0 280 230">
+          <path d="M115.00 35.00 A80 80 0 0 1 191.95 93.11" fill="none" stroke="#ffa500" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M191.95 93.11 A80 80 0 0 1 161.22 180.30" fill="none" stroke="#e040fb" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M161.22 180.30 A80 80 0 0 1 71.50 182.14" fill="none" stroke="#4fc3f7" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M71.50 182.14 A80 80 0 0 1 35.71 104.35" fill="none" stroke="#a5d6a7" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M35.71 104.35 A80 80 0 0 1 77.15 44.52" fill="none" stroke="#fff176" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M77.15 44.52 A80 80 0 0 1 95.49 37.42" fill="none" stroke="#f48fb1" stroke-width="20" stroke-linejoin="round"/>
+          <path d="M95.49 37.42 A80 80 0 0 1 115.00 35.00" fill="none" stroke="#80cbc4" stroke-width="20" stroke-linejoin="round"/>
+          <text x="115" y="110" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">306</text>
+          <text x="115" y="129" text-anchor="middle" font-size="11" fill="#888">TOTAL</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 右下：Type条形图 — gap:2.5px统一 -->
+    <div class="cb">
+      <div style="display:flex;flex-direction:column;gap:5.5px;padding:2px 0;">
+        <div class="br"><div class="blbl">Op Request</div><div class="btrk"><div class="bfil" style="width:41.2%;background:#ffa500"></div></div></div>
+        <div class="br"><div class="blbl">Data</div><div class="btrk"><div class="bfil" style="width:39.2%;background:#e040fb"></div></div></div>
+        <div class="br"><div class="blbl">Proj/Req Task</div><div class="btrk"><div class="bfil" style="width:37.9%;background:#4fc3f7"></div></div></div>
+        <div class="br"><div class="blbl">New Reqrmt</div><div class="btrk"><div class="bfil" style="width:35.9%;background:#a5d6a7"></div></div></div>
+        <div class="br"><div class="blbl">Process</div><div class="btrk"><div class="bfil" style="width:30.1%;background:#fff176"></div></div></div>
+        <div class="br"><div class="blbl">Tech Issue</div><div class="btrk"><div class="bfil" style="width:7.8%;background:#f48fb1"></div></div></div>
+        <div class="br"><div class="blbl">Training</div><div class="btrk"><div class="bfil" style="width:7.8%;background:#80cbc4"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="navBar">
+  <button class="nbtn" id="prevBtn">&#8592;</button>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="ndot active" data-page="1"></div>
+    <div class="ndot" data-page="2"></div>
+    <div class="ndot" data-page="3"></div>
+  </div>
+  <button class="nbtn" id="nextBtn">&#8594;</button>
+  <span class="pgnum"><span id="curPage">1</span> / 3</span>
+</div>
+
+<script>
+var slides=document.querySelectorAll(".slide"),dots=document.querySelectorAll(".ndot"),cur=0;
+function go(n){
+  if(n<0||n>=slides.length)return;
+  slides.forEach(function(s){s.classList.remove("active")});
+  dots.forEach(function(d){d.classList.remove("active")});
+  slides[n].classList.add("active");
+  dots[n].classList.add("active");
+  cur=n;
+  document.getElementById("curPage").textContent=n+1;
+  document.getElementById("prevBtn").style.opacity=cur===0?"0.2":"1";
+  document.getElementById("nextBtn").style.opacity=cur===slides.length-1?"0.2":"1";
+}
+dots.forEach(function(d){d.addEventListener("click",function(){go(+this.dataset.page-1)})});
+document.getElementById("prevBtn").addEventListener("click",function(){go(cur-1)});
+document.getElementById("nextBtn").addEventListener("click",function(){go(cur+1)});
+document.addEventListener("keydown",function(e){
+  if(e.key==="ArrowRight")go(cur+1);
+  if(e.key==="ArrowLeft")go(cur-1);
+  if(e.key===" "||e.key==="Enter"){document.getElementById("navBar").classList.toggle("on");}
+});
+go(0);
+</script>
+</body>
+</html>
